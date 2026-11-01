@@ -47,6 +47,10 @@ class NLPServiceTests(unittest.TestCase):
         with self.assertRaises(NLPServiceError):
             make_service(FakeClient()).entities("   ")
 
+    def test_missing_api_key_is_reported_when_using_default_client(self):
+        with self.assertRaisesRegex(NLPServiceError, "Missing NLPCLOUD_API_KEY"):
+            NLPService().entities("some text")
+
     def test_api_errors_are_wrapped(self):
         with self.assertRaises(NLPServiceError) as ctx:
             make_service(BrokenClient()).entities("some text")

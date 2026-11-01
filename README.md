@@ -14,7 +14,7 @@ A command-line application that lets registered users run **Named Entity Recogni
 ## 📁 Project structure
 
 ```
-nlp-cloud-app/
+OopProject/
 ├── main.py                 # entry point
 ├── nlp_app/
 │   ├── auth.py             # registration, login, password hashing
@@ -22,7 +22,8 @@ nlp-cloud-app/
 │   ├── config.py           # settings loaded from .env
 │   └── nlp_service.py      # NLP Cloud API wrapper (NER, language, sentiment)
 ├── tests/                  # offline unit tests
-├── .env.example            # template for your API key
+├── .env.example            # template for your API key and settings
+├── .gitignore              # excludes local secrets and generated files
 ├── requirements.txt
 └── README.md
 ```
@@ -32,8 +33,8 @@ nlp-cloud-app/
 **1. Clone and install**
 
 ```bash
-git clone https://github.com/<your-username>/nlp-cloud-app.git
-cd nlp-cloud-app
+git clone https://github.com/abhishekvermacsds/OopProject.git
+cd OopProject
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -47,6 +48,8 @@ Create a free account at [nlpcloud.com](https://nlpcloud.com), copy your API tok
 cp .env.example .env             # Windows: copy .env.example .env
 # open .env and set NLPCLOUD_API_KEY=your_key
 ```
+
+The app can start without an API key, but NLP analysis features require one.
 
 **3. Run**
 

@@ -28,6 +28,10 @@ class NLPServiceError(Exception):
 
 def _default_client_factory(api_key: str, gpu: bool) -> Callable:
     def factory(model: str, lang: str = ""):
+        if not api_key.strip():
+            raise NLPServiceError(
+                "Missing NLPCLOUD_API_KEY. Copy .env.example to .env and add your NLP Cloud API key."
+            )
         import nlpcloud  # imported lazily so tests / --help work without the package
 
         return nlpcloud.Client(model, api_key, gpu=gpu, lang=lang)
@@ -37,15 +41,16 @@ def _default_client_factory(api_key: str, gpu: bool) -> Callable:
 
 def _friendly_message(exc: Exception) -> str:
     status = getattr(getattr(exc, "response", None), "status_code", None)
-    if status == 401:
-        return "Invalid API key. Check NLPCLOUD_API_KEY in your .env file."
-    if status in (402, 403):
-        return "Access denied or quota exceeded for this model on your NLP Cloud plan."
-    if status == 404:
-        return "Model not found. Check the model name in your configuration."
-    if status == 429:
-        return "Rate limit reached. Please wait a moment and try again."
-    if status and status >= 500:
+    status_messages = {
+        401: "Invalid API key. Check NLPCLOUD_API_KEY in your .env file.",
+        402: "Access denied or quota exceeded for this model on your NLP Cloud plan.",
+        403: "Access denied or quota exceeded for this model on your NLP Cloud plan.",
+        404: "Model not found. Check the model name in your configuration.",
+        429: "Rate limit reached. Please wait a moment and try again.",
+    }
+    if status in status_messages:
+        return status_messages[status]
+    if status is not None and status >= 500:
         return "NLP Cloud is having trouble right now. Please try again later."
     if isinstance(exc, (ConnectionError, TimeoutError, OSError)):
         return "Network error. Check your internet connection and try again."
