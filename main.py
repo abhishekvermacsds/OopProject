@@ -6,12 +6,6 @@ from nlp_app.nlp_service import NLPService
 
 
 def main() -> None:
-    if not config.API_KEY:
-        raise SystemExit(
-            "Missing NLPCLOUD_API_KEY.\n"
-            "Copy .env.example to .env and paste your NLP Cloud API key into it."
-        )
-
     service = NLPService(
         api_key=config.API_KEY,
         ner_model=config.NER_MODEL,

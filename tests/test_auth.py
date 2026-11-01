@@ -7,12 +7,10 @@ from nlp_app.auth import AuthError, UserStore
 
 class UserStoreTests(unittest.TestCase):
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
+        self._tmp = tempfile.TemporaryDirectory()  # pylint: disable=consider-using-with
+        self.addCleanup(self._tmp.cleanup)
         self.path = Path(self._tmp.name) / "users.json"
         self.store = UserStore(self.path)
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def test_register_and_login(self):
         self.store.register("Asha", "Asha@Example.com", "supersecret1")

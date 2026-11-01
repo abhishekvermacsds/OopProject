@@ -164,5 +164,5 @@ class NLPApp:
         label, score = scores[0]
         print(f"\n{SENTIMENT_EMOJI.get(label, '🙂')} Dominant emotion: {label.upper()} ({score:.1%})\n")
         for label, score in scores:
-            bar = "█" * round(score * 30)
-            print(f"  {label:<10}{bar:<30} {score:6.1%}")
+            score_bar = "█" * round(score * 30)
+            print(f"  {label:<10}{score_bar:<30} {score:6.1%}")
